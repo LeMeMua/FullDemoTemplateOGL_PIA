@@ -130,9 +130,9 @@ public:
         if (direction == BACKWARD)
             Position -= Front * velocity;
         if (direction == LEFT)
-            Position -= Right * velocity;
+            Position -= Right * (velocity);
         if (direction == RIGHT)
-            Position += Right * velocity;
+            Position += Right * (velocity);
     }
 
     void movePosition(glm::vec3& avance, float vel) {

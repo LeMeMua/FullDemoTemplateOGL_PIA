@@ -61,20 +61,20 @@ bool KeysEvents(GameActions *actions){
 	}
 	if (KEYS[input.D]) {
 		if (KEYS[KEYB_HMOVEMENT])
-			actions->hAdvance = -1;
-		else
 			actions->sideAdvance = -1;
+		else
+			actions->hAdvance = -1;
 //		KEYS[input.D] = false;
 	}
 	if (KEYS[input.A]) {
 		if (KEYS[KEYB_HMOVEMENT])
-			actions->hAdvance = 1;
-		else
 			actions->sideAdvance = 1;
+		else
+			actions->hAdvance = 1;
 //		KEYS[input.A] = false;
 	}
 	if (KEYS[input.W]) {
-		actions->advance = 1;
+		actions->advance = 1; 
 //		KEYS[input.W] = false;
 	}
 	if (KEYS[input.S]) {
@@ -84,11 +84,11 @@ bool KeysEvents(GameActions *actions){
 	if (KEYS[input.Space] && *actions->jump == 0){
 		*actions->jump = 20;
 	}
-	if (cDelta.getLbtn() && cDelta.getDX() != 0) {
+	if (cDelta.getDX() != 0) { //cDelta.getLbtn() &&
 		actions->setAngle(cDelta.getDX() > 0 ? 1 : -1);
 	}
-	if (cDelta.getRbtn() && cDelta.getDY() != 0) { //KEYS[KEYB_CAMERA]
-		actions->setPitch(cDelta.getDY() > 0 ? 1 : -1);
+	if (cDelta.getDY() != 0) { //KEYS[KEYB_CAMERA]
+		actions->setPitch(cDelta.getDY() > 0 ? -1 : 1);
 	}
 	if ((!KEYS[KEYB_CAMERA]) && cDelta.getMouseWheel() != 0) {
 		actions->setPlayerZoom(cDelta.getMouseWheel() > 0 ? 1 : -1);

@@ -226,7 +226,15 @@ bool checkInput(GameActions *actions, Scene* scene) {
         OGLobj->setNextTranslate(&pos);
     }
     if (actions->getAngle() != NULL) {
-        OGLobj->cameraDetails->calculateAngleAroundPlayer((*actions->getAngle()) * (6 * gameTime.deltaTime / 100));
+        //OGLobj->cameraDetails->calculateAngleAroundPlayer((*actions->getAngle()) * (100 * gameTime.deltaTime / 100));
+        //OGLobj->setRotY((*actions->getAngle()) * (100 * gameTime.deltaTime / 100));
+        float delta_angle = (*actions->getAngle()) * (20 * gameTime.deltaTime / 100);
+
+        // 2. Leemos el estado del siguiente fotograma
+        float current_angle = OGLobj->getNextRotY();
+
+        // 3. Escribimos el nuevo estado (Leer + Modificar)
+        OGLobj->setNextRotY(current_angle + delta_angle);
     }
     if (actions->getPitch() != NULL) {
         OGLobj->cameraDetails->setPitch(OGLobj->cameraDetails->getPitch() + (*actions->getPitch()) * (6 * gameTime.deltaTime / 100));
@@ -512,12 +520,35 @@ void mouseActions() {
     glfwGetCursorPos(window, &x, &y);
 #endif
     glm::vec2 scale = glm::vec2(x, y) / windowSize;
-    OGLobj->getMainModel()->cameraDetails->setPitch(scale.y * 70.0f - 30.f);
-    scale = cDelta.setPosition(x, y, cDelta.getLbtn() || cDelta.getRbtn());
+    //OGLobj->getMainModel()->cameraDetails->setPitch(scale.y * 70.0f - 30.f); desbloquear para camara fluida
+    scale = cDelta.setPosition(x, y, true); //cDelta.getLbtn() || cDelta.getRbtn()
 /*    scale = cDelta.setPosition(x, y, true);
     if (scale.x != 0)
         OGLobj->getMainModel()->cameraDetails->calculateAngleAroundPlayer((scale.x / abs(scale.x)) * -3.0);*/
 }
+
+//void mouseActions() {
+//    // 1. Define el centro de la pantalla
+//    RECT windowRect;
+//    GetWindowRect(hWnd, &windowRect);
+//    int centerX = windowRect.left + (windowRect.right - windowRect.left) / 2;
+//    int centerY = windowRect.top + (windowRect.bottom - windowRect.top) / 2;
+//
+//    // 2. Obtiene la posición actual del ratón
+//    POINT p;
+//    GetCursorPos(&p);
+//
+//    // 3. Calcula el delta (cuánto se movió desde el centro)
+//    float deltaX = p.x - centerX;
+//    float deltaY = p.y - centerY;
+//
+//    // 4. Guarda ese delta para que KeysEvents lo pueda usar
+//    //    El 'true' le dice a setPosition que estamos pasando un delta, no una posición.
+//    cDelta.setPosition(deltaX, deltaY, true);
+//
+//    // 5. ¡El paso clave! Regresa el cursor al centro de la pantalla.
+//    SetCursorPos(centerX, centerY);
+//}
 
 int isProgramRunning(void *ptr){
     double currentTime = get_nanos() / 1000000.0;
